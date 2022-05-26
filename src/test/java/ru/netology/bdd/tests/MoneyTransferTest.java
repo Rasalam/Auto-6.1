@@ -12,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class MoneyTransferTest {
 
-    @BeforeAll
-    static void preparePage() {
+    @BeforeEach
+    public void preparePage() {
         open("http://localhost:9999");
         var loginPage = new LoginPage();
         var authInfo = TestData.getAuthInfo();
@@ -24,7 +24,6 @@ class MoneyTransferTest {
     }
 
     @Test
-    @Order(1)
     void shouldTransferMoneySuccessFromCardTwoToCardOne() {
         int cardIndex = 1;                  // [0]5559000000000001, [1]5559000000000002, [2]5559000000000003 (invalid number)
         int sumIndex = 0;                   // [0]1_000, [1]20_000 (invalid sum)
@@ -38,7 +37,6 @@ class MoneyTransferTest {
     }
 
     @Test
-    @Order(2)
     void shouldTransferMoneySuccessFromCardOneToCardTwo() {
         int cardIndex = 0;                  // [0]5559000000000001, [1]5559000000000002, [2]5559000000000003 (invalid number)
         int sumIndex = 0;                   // [0]1_000, [1]20_000 (invalid sum)
@@ -53,7 +51,6 @@ class MoneyTransferTest {
     }
 
     @Test
-    @Order(3)
     void shouldShowMessageIfCardNumberIsInvalid() {
         int cardIndex = 2;                  // [0]5559000000000001, [1]5559000000000002, [2]5559000000000003 (invalid number)
         int sumIndex = 0;                   // [0]1_000, [1]20_000 (invalid sum)
@@ -65,7 +62,6 @@ class MoneyTransferTest {
     }
 
     @Test
-    @Order(4)
     void shouldShowMessageIfCardLimitExceeded() {
         int cardIndex = 0;                  // [0]5559000000000001, [1]5559000000000002, [2]5559000000000003 (invalid number)
         int sumIndex = 1;                   // [0]1_000, [1]20_000 (invalid sum)
