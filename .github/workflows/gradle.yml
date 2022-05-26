@@ -1,3 +1,4 @@
+
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
 # separate terms of service, privacy policy, and support
@@ -21,10 +22,10 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+
+      - name: run SUT
+        run: java -jar ./artifacts/app-ibank-build-for-testers.jar -P:profile=test &
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
-        run: ./gradlew test
-
-# Команда `chmod +x gradlew` делает файл gradlew исполняемым в linux. 
-# Команда `./gradlew test` собирает ваш проект и запускает тесты.
+        run: ./gradlew test -Dselenide.headless=true --info
