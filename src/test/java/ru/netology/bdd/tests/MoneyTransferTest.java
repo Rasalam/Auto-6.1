@@ -9,7 +9,6 @@ import ru.netology.bdd.pageobject.DashboardPage;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class MoneyTransferTest {
 
     @BeforeEach
@@ -25,50 +24,50 @@ class MoneyTransferTest {
 
     @Test
     void shouldTransferMoneySuccessFromCardTwoToCardOne() {
-        int cardIndex = 1;                  // [0]5559000000000001, [1]5559000000000002, [2]5559000000000003 (invalid number)
-        int sumIndex = 0;                   // [0]1_000, [1]20_000 (invalid sum)
-        var DashboardPage = new DashboardPage();
-        var cardOneBalanceBefore = DashboardPage.getBalanceCardOne();
-        var cardTwoBalanceBefore = DashboardPage.getBalanceCardTwo();
-        DashboardPage.pushTransferButtonCardOne();
-        TransferPage.transferMoney(sumIndex, cardIndex);
-        assertEquals(cardOneBalanceBefore + TestData.getSumOfTransfer(sumIndex), DashboardPage.getBalanceCardOne());
-        assertEquals(cardTwoBalanceBefore - TestData.getSumOfTransfer(sumIndex), DashboardPage.getBalanceCardTwo());
+        int transferSum = 1000;
+        var dashboardPage = new DashboardPage();
+        var cardOneBalanceBefore = dashboardPage.getBalanceCardOne();
+        var cardTwoBalanceBefore = dashboardPage.getBalanceCardTwo();
+        dashboardPage.pushTransferButtonCardOne();
+        var transferPage = new TransferPage();
+        transferPage.transferMoney(transferSum, TestData.getCardNumberTwo());
+        assertEquals(cardOneBalanceBefore + transferSum, dashboardPage.getBalanceCardOne());
+        assertEquals(cardTwoBalanceBefore - transferSum, dashboardPage.getBalanceCardTwo());
     }
 
     @Test
     void shouldTransferMoneySuccessFromCardOneToCardTwo() {
-        int cardIndex = 0;                  // [0]5559000000000001, [1]5559000000000002, [2]5559000000000003 (invalid number)
-        int sumIndex = 0;                   // [0]1_000, [1]20_000 (invalid sum)
-        var DashboardPage = new DashboardPage();
-        var cardOneBalanceBefore = DashboardPage.getBalanceCardOne();
-        var cardTwoBalanceBefore = DashboardPage.getBalanceCardTwo();
-        DashboardPage.pushTransferButtonCardTwo();
-        TransferPage.transferMoney(sumIndex, cardIndex);
-        assertEquals(cardOneBalanceBefore - TestData.getSumOfTransfer(sumIndex), DashboardPage.getBalanceCardOne());
-        assertEquals(cardTwoBalanceBefore + TestData.getSumOfTransfer(sumIndex), DashboardPage.getBalanceCardTwo());
+        int transferSum = 1000;
+        var dashboardPage = new DashboardPage();
+        var cardOneBalanceBefore = dashboardPage.getBalanceCardOne();
+        var cardTwoBalanceBefore = dashboardPage.getBalanceCardTwo();
+        dashboardPage.pushTransferButtonCardTwo();
+        var transferPage = new TransferPage();
+        transferPage.transferMoney(transferSum, TestData.getCardONumberOne());
+        assertEquals(cardOneBalanceBefore - transferSum, dashboardPage.getBalanceCardOne());
+        assertEquals(cardTwoBalanceBefore + transferSum, dashboardPage.getBalanceCardTwo());
 
     }
 
     @Test
     void shouldShowMessageIfCardNumberIsInvalid() {
-        int cardIndex = 2;                  // [0]5559000000000001, [1]5559000000000002, [2]5559000000000003 (invalid number)
-        int sumIndex = 0;                   // [0]1_000, [1]20_000 (invalid sum)
-        var DashboardPage = new DashboardPage();
-        DashboardPage.pushTransferButtonCardOne();
-        TransferPage.transferMoney(sumIndex, cardIndex);
-        TransferPage.numberCardIsInvalid();
+        int transferSum = 1000;
+        var dashboardPage = new DashboardPage();
+        dashboardPage.pushTransferButtonCardOne();
+        var transferPage = new TransferPage();
+        transferPage.transferMoney(transferSum, TestData.getInvalidCardNumber());
+        transferPage.numberCardIsInvalid();
 
     }
 
     @Test
     void shouldShowMessageIfCardLimitExceeded() {
-        int cardIndex = 0;                  // [0]5559000000000001, [1]5559000000000002, [2]5559000000000003 (invalid number)
-        int sumIndex = 1;                   // [0]1_000, [1]20_000 (invalid sum)
-        var DashboardPage = new DashboardPage();
-        DashboardPage.pushTransferButtonCardTwo();
-        TransferPage.transferMoney(sumIndex, cardIndex);
-        TransferPage.cardLimitIsExceeded();
+        var dashboardPage = new DashboardPage();
+        int transferSum = dashboardPage.getBalanceCardOne() + 1;
+        dashboardPage.pushTransferButtonCardTwo();
+        var transferPage = new TransferPage();
+        transferPage.transferMoney(transferSum, TestData.getCardONumberOne());
+        transferPage.cardLimitIsExceeded();
 
     }
 }

@@ -38,33 +38,22 @@ public class TestData {
 
     @Value
     public static class CardNumber {
-        String[] cardNumber = new String[3];
-
-        private CardNumber() {
-            cardNumber[0] = "5559000000000001";
-            cardNumber[1] = "5559000000000002";
-            cardNumber[2] = "5559000000000003";
-        }
+        String cardNumber;
 
     }
 
-    public static String getCardNumber(int index) {
-        return new CardNumber().cardNumber[index];
+    public static CardNumber getCardONumberOne() {
+        return new CardNumber("5559000000000001");
 
     }
 
-    @Value
-    public static class SumOfTransfer {
-        int[] sum = new int[2];
-
-        private  SumOfTransfer () {
-            sum[0]= 1_000;
-            sum[1]= 20_000;
-        }
+    public static CardNumber getCardNumberTwo() {
+        return new CardNumber("5559000000000002");
     }
 
-    public static int getSumOfTransfer(int index) {
-        return new SumOfTransfer().sum[index];
+
+    public static CardNumber getInvalidCardNumber() {
+        return new CardNumber("5559000000000003");
     }
 }
 
